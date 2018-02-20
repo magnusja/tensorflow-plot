@@ -143,7 +143,7 @@ def wrap(plot_func, _sentinel=None,
     factory_fn = ops.wrap(plot_func, batch=batch, name=name, **kwargs)
     def _summary_fn(summary_name, *args, **kwargs_call):
         plot_op = factory_fn(*args, **kwargs_call)
-        return tf.summary.image(summary_name, plot_op,
+        return tf.summary.image(summary_name, plot_op if batch else tf.expand_dims(plot_op, 0),,
                                 max_outputs=kwargs_call.pop('max_outputs', 3),
                                 collections=kwargs_call.pop('collections', None),
                                 )
